@@ -11,12 +11,25 @@ public class GameController : MonoBehaviour
     public Transform DestinoTransform;
     public Animator DireccionAnimator;
     public Animator ElevacionAnimator;
+    public Animator IndicadorAnimator;
+    public float NivelDeFuerza1;
+    public float NivelDeFuerza2;    
+    public Transform TransformIndicador;
     // Start is called before the first frame update
 
     void Start()
     {
         DireccionAnimator.speed = 1;
         ElevacionAnimator.speed = 0;
+    }
+
+    public void DetenerBarrafuerza()
+    {
+        IndicadorAnimator.speed = 0;
+        IndicadorAnimator.Update(0);
+
+        NivelDeFuerza1 = TransformIndicador.localPosition.y;
+        NivelDeFuerza2 = Mathf.InverseLerp(0f, 2080f, NivelDeFuerza1);
     }
     public void PosicionarPelota()
     {
@@ -32,7 +45,7 @@ public class GameController : MonoBehaviour
     {
         Vector3 Dirección = (DestinoTransform.position - BalonTransform.position).normalized;
         //print("Pelota Pateada");
-        BalonRigidBody.AddForce(Dirección * fuerza, ForceMode.Impulse);
+        BalonRigidBody.AddForce(Dirección * fuerza * NivelDeFuerza2, ForceMode.Impulse);
     }
 
     // Update is called once per frame
